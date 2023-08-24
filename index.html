@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>MeMe Editor</title>
+</head>
+<body onload=onInit()>
+
+<header>
+    <div class="logo">mEmE eDiToR</div>
+    <nav>
+        <ul>
+            <li>Gallery</li>
+            <li>Meme Editor</li>
+            <li>About</li>
+        </ul>
+    </nav>
+</header>
+<Main>
+    <section class="gallery-container"></section>
+
+    <section class="canvas-container">
+        <div class="canvas-layout">
+            <canvas class="canvas-meme" height="500px" width="500px"></canvas>
+        </div>
+        <div class="meme-editor">
+            <input type="text" class="txt" placeholder="Please Insert Text">
+            <div class="font-range">
+                <!-- add running range num here -->
+                <input type="range" id="font-size" name="font-size" min="6" max="50" value="16" step="2" />
+                <label for="font-size">Aa</label>
+            </div>
+            <select class="font-type" name="font-type" >
+                <option value="Impact">Impact</option>
+                <option value="Arial">Arial</option>
+            </select>
+            <input type="color" class="txt-color" name="fillColor">
+            <button class="btn save-btn">Save</button>
+            <button class="btn dled-btn"><a href="#" download="MyMeme">Download</a></button>
+        
+        </div>
+    </section>
+
+</Main>
+
+<script src="js/service/utilService.js"></script>
+<script src="js/service/galleryService.js"></script>
+<script src="js/service/memeService.js"></script>
+<script src="js/galleryController.js"></script>
+<script src="js/memeController.js"></script>
+</body>
+
+</html>
