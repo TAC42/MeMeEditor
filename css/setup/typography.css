@@ -1,7 +1,7 @@
-@font-face {
+/* @font-face {
     font-family: latoReg;
     src: url("../../font/lato/Lato-Regular.ttf");
-}
+} */
 @font-face {
     font-family: euroFurence;
     src: url("../../font/euro-furence/eurof55.ttf");
@@ -9,7 +9,7 @@
 
 @font-face {
     font-family: pacifico;
-    src: url("font/Pacifico/Pacifico-Regular.ttf");
+    src: url("../../font/Pacifico/Pacifico-Regular.ttf");
 }
 
 @font-face {
