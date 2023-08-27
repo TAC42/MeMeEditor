@@ -100,6 +100,8 @@ function addEventListeners() {
   const elRemoveLineBtn = document.querySelector('.trash-line')
   elRemoveLineBtn.addEventListener('click', function () { onRemoveLine() })
 
+  
+
   // Mouse
   gCanvas.addEventListener('mousedown', onDown)
   gCanvas.addEventListener('mousemove', onMove)

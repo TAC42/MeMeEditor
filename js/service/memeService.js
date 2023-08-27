@@ -98,16 +98,9 @@ function getTextMarkerCords(idx) {
 }
 
 function addLine() {
-    gMeme.lines.push({
-        txt: 'Insert Desired Text',
-        font: 'impact',
-        fontSize: 40,
-        align: 'left',
-        color: 'white',
-        position: { x: gCanvasWidth / 2, y: gCanvasHeight / 2 },
-        isMoving: false,
-        isMarked: true
-    })
+    console.log('Hey im here:');
+    gMeme.lines.push(_createLine())
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
+    console.log('gMeme:', gMeme);
 }
 
