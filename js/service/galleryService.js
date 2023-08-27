@@ -1,103 +1,37 @@
 'use strict'
+const gWords = ['funny', 'tough', 'crazy', 'angry', 'rofl', 'animal', 'human']
+const gImgs = _createImgs()
+let gKeywordSearchCountMap = _createKeywordSearchCountMap()
 
-const gImgs = [
-    {
-      id: 1,
-      url: 'img/1.jpg',
-      keywords: [],
-    },
-    {
-      id: 2,
-      url: 'img/2.jpg',
-      keywords: [],
-    },
-    {
-      id: 3,
-      url: 'img/3.jpg',
-      keywords: [],
-    },
-    {
-      id: 4,
-      url: 'img/4.jpg',
-      keywords: [],
-    },
-    {
-      id: 5,
-      url: 'img/5.jpg',
-      keywords: [],
-    },
-    {
-      id: 6,
-      url: 'img/6.jpg',
-      keywords: [],
-    },
-    {
-      id: 7,
-      url: 'img/7.jpg',
-      keywords: [],
-    },
-    {
-      id: 8,
-      url: 'img/8.jpg',
-      keywords: [],
-    },
-    {
-      id: 9,
-      url: 'img/9.jpg',
-      keywords: [],
-    },
-    {
-      id: 10,
-      url: 'img/10.jpg',
-      keywords: [],
-    },
-    {
-      id: 11,
-      url: 'img/11.jpg',
-      keywords: [],
-    },
-    {
-      id: 12,
-      url: 'img/12.jpg',
-      keywords: [],
-    },
-    {
-      id: 13,
-      url: 'img/13.jpg',
-      keywords: [],
-    },
-    {
-      id: 14,
-      url: 'img/14.jpg',
-      keywords: [],
-    },
-    {
-      id: 15,
-      url: 'img/15.jpg',
-      keywords: [],
-    },
-    {
-      id: 16,
-      url: 'img/16.jpg',
-      keywords: [],
-    },
-    {
-      id: 17,
-      url: 'img/17.jpg',
-      keywords: [],
-    },
-    {
-      id: 18,
-      url: 'img/18.jpg',
-      keywords: [],
-    },
-  ];
-
-console.log('gImgs:', gImgs)
-
-
-function getImage() {
-    return gImgs[0]
+function _createImgs() {
+  let imgs = []
+  for (let i = 0; i < 18; i++) {
+    imgs[i] = {
+          id: i + 1,
+          url: `img/${i + 1}.jpg`,
+          keywords: getRandomWords(gWords)
+      }  
+  }
+  return imgs
 }
 
-let gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
+function _createKeywordSearchCountMap() {
+  return gWords.reduce((acc, keyword) => {
+      if(!acc[keyword]) {acc[keyword] = 0}
+      acc[keyword]++
+      return acc
+  }, { })
+}
+
+function getImgs() {
+  return gImgs
+}
+
+function getImage(id) {
+    return gImgs.find(img => img.id === +id)
+}
+
+
+
+
+

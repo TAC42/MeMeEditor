@@ -1,0 +1,35 @@
+@font-face {
+    font-family: latoReg;
+    src: url("../../font/lato/Lato-Regular.ttf");
+}
+@font-face {
+    font-family: euroFurence;
+    src: url("../../font/euro-furence/eurof55.ttf");
+}
+
+@font-face {
+    font-family: pacifico;
+    src: url("../../font/pacifico/pacifico-regular.ttf");
+}
+
+@font-face {
+    font-family: fa;
+    src: url("../../fonts/fa/fa-brands-400.ttf");
+}
+
+.fa::before {
+    font-family: fa;
+}
+
+.fa.plus-line::before {
+    content: "\2b";
+}
+
+.fa.minus-line::before {
+    content: "\f068";
+}
+
+.fa.trash-line::before {
+    content: "\f1f8";
+}
+

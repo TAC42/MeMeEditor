@@ -7,50 +7,61 @@
     <link rel="stylesheet" href="css/style.css">
     <title>MeMe Editor</title>
 </head>
-<body onload=onInit()>
 
-<header>
-    <div class="logo">mEmE eDiToR</div>
-    <nav>
-        <ul>
-            <li>Gallery</li>
-            <li>Meme Editor</li>
-            <li>About</li>
-        </ul>
-    </nav>
-</header>
-<Main>
-    <section class="gallery-container"></section>
+<body class="main-layout">
 
-    <section class="canvas-container">
-        <div class="canvas-layout">
-            <canvas class="canvas-meme" height="500px" width="500px"></canvas>
-        </div>
-        <div class="meme-editor">
-            <input type="text" class="txt" placeholder="Please Insert Text">
-            <div class="font-range">
-                <!-- add running range num here -->
-                <input type="range" id="font-size" name="font-size" min="6" max="50" value="16" step="2" />
-                <label for="font-size">Aa</label>
+    <header class="main-header main-layout flex justify-between align-center">
+        <div class="logo">mEmE eDiToR</div>
+        <nav>
+            <ul class="clean-list flex">
+                <li class="links nav-gallery pressed full-flex" href="#">Gallery</li>
+                <li class="links nav-editor full-flex" href="#">Editor</li>
+                <li class="links nav-about full-flex" href="#">About</li>
+            </ul>
+        </nav>
+        <button class="nav-phone hide">☰</button>
+    </header>
+    <Main>
+        <section class="gallery-container main-layout flex wrap justify-center"></section>
+
+        <section class="canvas-container main-layout">
+            <div class="canvas-layout">
+                <canvas class="canvas-meme" height="480" width="480"></canvas>
             </div>
-            <select class="font-type" name="font-type" >
-                <option value="Impact">Impact</option>
-                <option value="Arial">Arial</option>
-            </select>
-            <input type="color" class="txt-color" name="fillColor">
-            <button onclick="onDrawImg()" class="btn save-btn">Save</button>
-            <button class="btn dled-btn"><a href="#" download="MyMeme">Download</a></button>
-        
-        </div>
-    </section>
+            <div class="meme-editor full-flex hide">
+                <input type="text" class="txt" placeholder="Please Insert Text">
+                <div class="lines-btns">
+                    <button class="btn add-line">+</button>
+                    <button class="btn switch-line">⇅</button>
+                    <button class="btn trash-line">🗑</button>
+                </div>
+                <div class="font-range">
+                    <!-- add running range num here -->
+                    <input class="font-size" type="range" id="font-size" name="font-size" min="16" max="60" value="16"
+                        step="2" />
+                    <label for="font-size">Aa</label>
+                </div>
+                <select class="font-type" name="font-type">
+                    <option value="Impact">Impact</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Courier New">Courier New</option>
+                    <option value="Verdana">Verdana</option>
+                </select>
+                <input type="color" class="txt-color" name="fillColor">
+                <div class="func-btn">
+                    <button class="btn save-btn">Save</button>
+                    <button class="btn dled-btn"><a href="#" download="MyMeme">Download</a></button>
+                </div>
+            </div>
+        </section>
+    </Main>
+    <div class="main-screen"></div>
 
-</Main>
-
-<script src="js/service/utilService.js"></script>
-<script src="js/service/galleryService.js"></script>
-<script src="js/service/memeService.js"></script>
-<script src="js/galleryController.js"></script>
-<script src="js/memeController.js"></script>
+    <script src="js/service/utilService.js"></script>
+    <script src="js/service/galleryService.js"></script>
+    <script src="js/service/memeService.js"></script>
+    <script src="js/galleryController.js"></script>
+    <script src="js/memeController.js"></script>
 </body>
 
 </html>

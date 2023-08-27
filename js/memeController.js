@@ -1,5 +1,11 @@
 'use strict'
 
+// On Load
+onload = () => {
+  onInitGallery()
+  onInitMeme()
+}
+
 // Canvas
 let gCanvas
 let gCtx
@@ -8,14 +14,14 @@ let gCtx
 let gStartPos
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 
-function onInit() {
+function onInitMeme() {
+  createMeme()
   gCanvas = document.querySelector('.canvas-meme')
-  console.log('gCanvas:', gCanvas);
   gCtx = gCanvas.getContext('2d')
-  resizeCanvas()
+
   addEventListeners()
 
-  renderMeme()
+  //renderMeme()
 }
 
 // renders an image on the canvas and a line of text on top
@@ -28,10 +34,9 @@ function onDrawImg() {
   const meme = getMeme()
   if (!meme.selectedImgId) return
 
-  const memeImg = getImage()
+  const memeImg = getImage(meme.selectedImgId)
   const img = new Image()
   img.src = memeImg.url
-  console.log('img:', img);
   gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
 }
 
@@ -39,59 +44,41 @@ function onDrawText() {
   const meme = getMeme()
   if (!meme.selectedImgId) return
   if (!meme.lines.length) return
-  meme.lines.forEach(line => {
-    drawText(line)
+  meme.lines.forEach((line, idx) => {
+    drawText(line, idx)
   })
-  console.log('meme.lines:', meme.lines);
 }
 
-function drawText(line) {
-  let { txt, fontSize, align, color, position, font } = line
-
+function drawText(line, idx) {
+  let { txt, fontSize, align, color, position: pos, font } = line
   gCtx.lineWidth = 2
   gCtx.fillStyle = `${color}`
+  gCtx.textAlign = line.align
   gCtx.font = `${fontSize}px ${font}`
   gCtx.textAlign = align
-  gCtx.fillText(txt, position.x, position.y)
-  gCtx.strokeText(txt, position.x, position.y)
-}
+  gCtx.lineWidth = 1
+  gCtx.fillText(txt, pos.x, pos.y)
+  gCtx.strokeText(txt, pos.x, pos.y)
 
 
-function setHighlightText(line) {
-  switch (line.align) {
-    case 'left':
-      drawRectangle(
-        line.position.x - 10,
-        line.position.y - line.fontSize,
-        line.txt.length * (  line.fontSize),
-        1.3 * line.fontSize
-      )
-      break
-    case 'center':
-      drawRectangle(
-        line.position.x - 10 - (line.txt.length * 0.5 * line.fontSize) / 2,
-        line.position.y - 1 * line.fontSize,
-        line.txt.length * line.fontSize,
-        1.3 * line.fontSize
-      )
-      break
-    case 'right':
-      drawRectangle(
-        line.position.x - 10 - line.txt.length * 0.5 * line.fontSize,
-        line.position.y - line.fontSize,
-        line.txt.length * line.fontSize,
-        1.3 * line.fontSize
-      )
-      break
+  const textMarkCords = getTextMarkerCords(idx)
+  setLineMarkCords(textMarkCords, idx)
+  const meme = getMeme()
+  if (idx === meme.selectedLineIdx && meme.lines[idx].isMarked) {
+    setTextMarker(textMarkCords)
   }
 }
 
-function drawRectangle(x, y, width, height) {
+function setTextMarker(cords) {
+  const { xBegin, yBegin, xEnd, yEnd } = cords
   gCtx.beginPath()
-  gCtx.rect(x, y, width , height)
-  gCtx.strokeStyle = '#ffffff'
+  gCtx.rect(xBegin, yBegin, xEnd, yEnd)
+  gCtx.lineWidth = 3;
+  gCtx.strokeStyle = 'black'
   gCtx.stroke()
+  gCtx.closePath()
 }
+
 
 function addEventListeners() {
   // Editor
@@ -101,15 +88,86 @@ function addEventListeners() {
   const elFontType = document.querySelector('.font-type')
   elFontType.addEventListener('change', function () { onChangeFont(this.value) })
 
-  // // Mouse
-  // gCanvas.addEventListener('mousedown', onDown)
-  // gCanvas.addEventListener('mousemove', onMove)
-  // gCanvas.addEventListener('mouseup', onUp)
+  const elFontSize = document.querySelector('.font-size')
+  elFontSize.addEventListener('change', function () { onChangeFontSize(this.value) })
 
-  // // Touch
-  // gCanvas.addEventListener('touchstart', onDown)
-  // gCanvas.addEventListener('touchmove', onMove)
-  // gCanvas.addEventListener('touchend', onUp)
+  const elAddLineBtn = document.querySelector('.add-line')
+  elAddLineBtn.addEventListener('click', function () { onAddLine() })
+
+  const elSwitchLineBtn = document.querySelector('.switch-line')
+  elSwitchLineBtn.addEventListener('click', function () { onSwitchLine() })
+
+  const elRemoveLineBtn = document.querySelector('.trash-line')
+  elRemoveLineBtn.addEventListener('click', function () { onRemoveLine() })
+
+  // Mouse
+  gCanvas.addEventListener('mousedown', onDown)
+  gCanvas.addEventListener('mousemove', onMove)
+  gCanvas.addEventListener('mouseup', onUp)
+
+  // Touch
+  gCanvas.addEventListener('touchstart', onDown)
+  gCanvas.addEventListener('touchmove', onMove)
+  gCanvas.addEventListener('touchend', onUp)
+}
+
+function onDown(ev) {
+  const pos = getEvPos(ev)
+  let lineIdx = isLineClicked(pos)
+  if (lineIdx < 0) {
+    setLineMarked(false)
+    renderMeme()
+    return
+  } else {
+    switchLine(lineIdx)
+    setLineText()
+    renderMeme()
+    isLineMoving(true)
+  }
+
+  gStartPos = pos
+  gCanvas.style.cursor = 'grabbing'
+}
+
+function onMove(ev) {
+  const line = getCurrLine()
+  if (!line || !line.isMoving) return
+  const pos = getEvPos(ev)
+  const dx = pos.offsetX - gStartPos.offsetX
+  const dy = pos.offsetY - gStartPos.offsetY
+  if (line.isMoving) moveLine(dx, dy)
+
+  gStartPos = pos
+  renderMeme()
+  gCanvas.style.cursor = 'grabbing'
+}
+
+function onUp() {
+  isLineMoving(false)
+  gCanvas.style.cursor = 'grab'
+}
+
+function getEvPos(ev) {
+  let pos = {
+    offsetX: ev.offsetX,
+    offsetY: ev.offsetY
+  }
+  if (gTouchEvs.includes(ev.type)) {
+    ev.preventDefault()
+    ev = ev.changedTouches[0]
+    let rect = ev.target.getBoundingClientRect()
+    pos = {
+      offsetX: ev.pageX - rect.left,
+      offsetY: ev.pageY - rect.top
+    }
+  }
+  return pos
+}
+
+function setLineText() {
+  const meme = getMeme()
+  const txt = (meme.lines.length) ? meme.lines[meme.selectedLineIdx].txt : 'No Lines!'
+  document.querySelector('.txt').value = txt
 }
 
 // ON EDITOR CHANGE FUNCTIONS 
@@ -117,31 +175,42 @@ function addEventListeners() {
 function onChangeText(txt) {
   setLineTxt(txt)
   renderMeme()
-  const currLine = getCurrLine()
-  setHighlightText(currLine)
 }
 
 function onChangeFont(font) {
-  changeFont(font)
+  setChangeFont(font)
   renderMeme()
 }
 
+function onChangeFontSize(fontSize) {
+  setChangeFontSize(fontSize)
+  renderMeme()
+}
 
+function onRemoveLine() {
+  removeLine();
+  renderMeme();
+}
 
+function onAddLine() {
+  addLine();
+  renderMeme();
+}
 
-
-/////////////////////
-
+function onSwitchLine() {
+  switchLine();
+  updateTextInput();
+  renderMeme();
+}
 
 
 function resizeCanvas() {
   const elCanvasControl = document.querySelector('.canvas-layout')
   gCanvas.width = elCanvasControl.offsetWidth
   gCanvas.height = elCanvasControl.offsetHeight
+  gCanvasWidth = gCanvas.width
+  gCanvasHeight = gCanvas.height
 }
-
-
-
 
 function onSaveMeme() {
   const memeUrl = gCanvas.toDataURL('image/png', 'image/jpeg')
