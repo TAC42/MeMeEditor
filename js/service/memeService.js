@@ -1,14 +1,19 @@
 'use strict'
 let gMeme = null
-let gCanvasWidth
-let gCanvasHeight
+// let gCanvasWidth
+// let gCanvasHeight
 function createMeme(imgId){
     
     gMeme = {
         selectedImgId: imgId,
         selectedLineIdx: 0,
 
-        lines: [{
+        lines: [_createLine()]
+    }
+}
+
+function _createLine(){
+    return {
             txt: 'Insert Desired Text',
             fontSize: 40,
             font: 'Impact',
@@ -17,11 +22,10 @@ function createMeme(imgId){
             align: 'left',
             isMoving: false,
             isMarked: true
-        }]
-    }
+        }
 }
 
-//returns meme to render the canvas
+
 function getMeme() {
     return gMeme
 }

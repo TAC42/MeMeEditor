@@ -9,12 +9,12 @@
 
 @font-face {
     font-family: pacifico;
-    src: url("../../font/pacifico/pacifico-regular.ttf");
+    src: url("/font/Pacifico/Pacifico-Regular.ttf");
 }
 
 @font-face {
     font-family: fa;
-    src: url("../../fonts/fa/fa-brands-400.ttf");
+    src: url("../../font/fa/fa-brands-400.ttf");
 }
 
 .fa::before {
