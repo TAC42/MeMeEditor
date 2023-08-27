@@ -5,7 +5,6 @@ function onInitGallery() {
     addGalleryListeners()
 }
 
-
 function renderGallery() {
     const imgs = getImgs()
     const strHTMLs = imgs.map((img, idx) => `<img src="${img.url}" 
@@ -13,8 +12,7 @@ function renderGallery() {
     const msg = `<p>Sorry, no matches.Try searching for something else.<p>`
     document.querySelector('.gallery-container').innerHTML = (imgs.length) ? strHTMLs.join('') : msg
 }
-
-//– call the memeService's setImg() and then renderMeme()
+ 
 function onImgSelect(imgId) {
     document.querySelector('.gallery-container').classList.add('hide')
     document.querySelector('.nav-gallery').classList.remove('pressed')
@@ -22,19 +20,14 @@ function onImgSelect(imgId) {
     document.querySelector('.meme-editor').classList.remove('hide')
     document.querySelector('.meme-editor').classList.add('flex')
     document.querySelector('main').classList.add('flex')
-    //gCanvas = document.querySelector('canvas')
-    // resizeCanvas()
-    // gCtx = gElCanvas.getContext('2d')
-    // addListeners()
-
-    //createMeme(elImg.id)
+   
     setImg(imgId)
     renderMeme()
 }
 
 function addGalleryListeners() {
     
-    const elNavPhone = document.querySelector('.nav-phone')
+    const elNavPhone = document.querySelector('.btn-toggle-menu')
     elNavPhone.addEventListener('click', toggleMenu() )
 
     const elMainScreen = document.querySelector('.main-screen')

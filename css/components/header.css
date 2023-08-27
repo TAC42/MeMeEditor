@@ -1,5 +1,6 @@
 .main-header {
     color: skyblue;
+    margin-top: 10px;
     height: 75px;
     padding: 5px 5%;
     border-radius: 20px;
@@ -40,7 +41,7 @@
     background-color: lightyellow;
 }
 
-.nav-phone {
+.btn-toggle-menu {
     background: inherit;
     color: skyblue;
     font-size: 2.5em;
@@ -49,6 +50,43 @@
     transition: .3s;
 }
 
-.nav-phone:hover {
+.btn-toggle-menu:hover {
     color: skyblue;
+}
+
+
+.btn-toggle-menu {
+    background-color: inherit;
+    border: 0;
+    color: skyblue
+}
+
+.btn-toggle-menu .hamburger-lines {
+    height: 26px;
+    width: 32px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-toggle-menu .hamburger-lines .line {
+    height: 4px;
+    width: 100%;
+    background-color: aliceblue;
+    transition:  0.4s ;
+}
+
+body.menu-open .btn-toggle-menu .hamburger-lines .line.line1 {
+    rotate: -45deg;
+    transform-origin: right top;
+}
+
+body.menu-open .btn-toggle-menu .hamburger-lines .line.line2 {
+    scale: 0;
+}
+
+body.menu-open .btn-toggle-menu .hamburger-lines .line.line3 {
+    rotate: 45deg;
+    transform-origin: right bottom;
 }

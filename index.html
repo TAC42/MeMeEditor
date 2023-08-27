@@ -19,7 +19,14 @@
                 <li class="links nav-about full-flex" href="#">About</li>
             </ul>
         </nav>
-        <button class="nav-phone hide">☰</button>
+        <!-- <button class="nav-phone hide">☰</button> -->
+        <button class="btn-toggle-menu hide" onclick="toggleMenu()">
+            <div class="hamburger-lines">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+                <span class="line line3"></span>
+            </div>
+        </button>
     </header>
     <Main>
         <section class="gallery-container main-layout flex wrap justify-center"></section>
@@ -35,22 +42,33 @@
                     <button class="btn switch-line">⇅</button>
                     <button class="btn trash-line">🗑</button>
                 </div>
-                <div class="font-range">
-                    <!-- add running range num here -->
-                    <input class="font-size" type="range" id="font-size" name="font-size" min="16" max="60" value="16"
+                <div class="full-flex font-range">
+                    <input class="font-size" type="range" id="font-size" name="font-size" min="16" max="60" value="30"
                         step="2" />
-                    <label for="font-size">Aa</label>
+                        <span>🗚: </span>
+                    <label  for="font-size">30</label>
+                </div>
+                <div class="full-flex rotate-range">
+                    <input class="rotate" type="range" id="rotate" name="font-size" min="0" max="360" value="180"
+                        step="1" />
+                        <span>ᳳ: </span>
+                    <label  for="rotate">180</label><span>°</span>
                 </div>
                 <select class="font-type" name="font-type">
                     <option value="Impact">Impact</option>
+                    <option value="pacifico">Pacifico</option>
                     <option value="Arial">Arial</option>
                     <option value="Courier New">Courier New</option>
                     <option value="Verdana">Verdana</option>
                 </select>
-                <input type="color" class="txt-color" name="fillColor">
+                <div class="colors">
+                    <input type="color" class="fill-color" name="fillColor">
+                    <span> ✎ </span>
+                    <input type="color" class="stroke-color" name="StrokeColor">
+                </div>
                 <div class="func-btn">
                     <button class="btn save-btn">Save</button>
-                    <button class="btn dled-btn"><a href="#" download="MyMeme">Download</a></button>
+                    <button class="btn dled-btn">Download</button>
                 </div>
             </div>
         </section>

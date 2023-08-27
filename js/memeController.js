@@ -50,13 +50,15 @@ function onDrawText() {
 }
 
 function drawText(line, idx) {
-  let { txt, fontSize, align, color, position: pos, font } = line
+  let { txt, fontSize, align, rotate , stroke, color, position: pos, font } = line
   gCtx.lineWidth = 2
   gCtx.fillStyle = `${color}`
+  gCtx.strokeStyle = `${stroke}`
   gCtx.textAlign = line.align
   gCtx.font = `${fontSize}px ${font}`
   gCtx.textAlign = align
-  gCtx.lineWidth = 1
+  gCtx.lineWidth = 2
+  gCtx.rotate(rotate)
   gCtx.fillText(txt, pos.x, pos.y)
   gCtx.strokeText(txt, pos.x, pos.y)
 
@@ -73,7 +75,7 @@ function setTextMarker(cords) {
   const { xBegin, yBegin, xEnd, yEnd } = cords
   gCtx.beginPath()
   gCtx.rect(xBegin, yBegin, xEnd, yEnd)
-  gCtx.lineWidth = 3;
+  gCtx.lineWidth = 0.5;
   gCtx.strokeStyle = 'black'
   gCtx.stroke()
   gCtx.closePath()
@@ -89,7 +91,16 @@ function addEventListeners() {
   elFontType.addEventListener('change', function () { onChangeFont(this.value) })
 
   const elFontSize = document.querySelector('.font-size')
-  elFontSize.addEventListener('change', function () { onChangeFontSize(this.value) })
+  elFontSize.addEventListener('change', function () { onChangeFontSize(this.value);onShowSize(this.value) })
+
+  // const elRotate = document.querySelector('.rotate')
+  // elRotate.addEventListener('change', function () { onChangeRotate(this.value);onShowSize(this.value) })
+
+  const elFillColor = document.querySelector('.fill-color')
+  elFillColor.addEventListener('change', function () { onChangeFillColor(this.value) })
+
+  const elStrokeColor = document.querySelector('.stroke-color')
+  elStrokeColor.addEventListener('change', function () { onChangeStrokeColor(this.value) })
 
   const elAddLineBtn = document.querySelector('.add-line')
   elAddLineBtn.addEventListener('click', function () { onAddLine() })
@@ -100,7 +111,11 @@ function addEventListeners() {
   const elRemoveLineBtn = document.querySelector('.trash-line')
   elRemoveLineBtn.addEventListener('click', function () { onRemoveLine() })
 
+  const elSaveBtn = document.querySelector('.save-btn')
+  elSaveBtn.addEventListener('click', function () { onSaveMeme() })
 
+  const elDledBtn = document.querySelector('.dled-btn')
+  elDledBtn.addEventListener('click', function () { onDownloadCanvas(this) })
 
   // Mouse
   gCanvas.addEventListener('mousedown', onDown)
@@ -185,26 +200,58 @@ function onChangeFont(font) {
 }
 
 function onChangeFontSize(fontSize) {
-  setChangeFontSize(fontSize)
+  console.log('fontSize:', fontSize);
+  setChangeFontSize(+fontSize)
+  renderMeme()
+}
+function onShowSize(fontSize) {
+  document.querySelector('.font-range label').innerText = fontSize
+}
+
+function onChangeFillColor(color) {
+  setChangeFillColor(color)
+  renderMeme()
+}
+
+function onChangeStrokeColor(color) {
+  setChangeStrokeColor(color)
   renderMeme()
 }
 
 function onRemoveLine() {
-  removeLine();
-  renderMeme();
+  removeLine()
+  renderMeme()
 }
 
 function onAddLine() {
-  addLine();
-  renderMeme();
+  addLine()
+  renderMeme()
 }
 
 function onSwitchLine() {
-  switchLine();
-  updateTextInput();
-  renderMeme();
+  switchLine()
+  renderMeme()
 }
 
+function onChangeRotate(rotateDegree) {
+  setRotateDegree(rotateDegree)
+  renderMeme()
+}
+
+function onDownloadCanvas(elLink) {
+  downloadCanvas(elLink)
+}
+
+function downloadCanvas(elLink) {
+  const dataUrl = gCanvas.toDataURL()
+  elLink.href = dataUrl
+  elLink.download = 'my-meme'
+}
+
+function changeTextInput(meme) {
+  let elTextInput = document.querySelector('.txt')
+  elTextInput.value = meme.lines[meme.selectedLineIdx].txt
+}
 
 function resizeCanvas() {
   const elCanvasControl = document.querySelector('.canvas-layout')

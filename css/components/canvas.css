@@ -7,7 +7,13 @@
     position: relative;
 
 }
-.meme-editor, .canvas-layout {
+
+.canvas-meme {
+    border-radius: 1.3em;
+}
+ 
+.meme-editor,
+.canvas-layout {
     border-radius: 15px;
 }
 
@@ -17,13 +23,14 @@
     align-items: center;
     gap: 20px;
     overflow: hidden;
-    background-color: rgba(0, 183, 255, 0.3) ;
-    
+    background-color: rgba(0, 183, 255, 0.3);
+
 
 }
+
 .canvas-container .meme-editor>* {
     background-color: #fff;
     border-radius: 15px;
     margin: 5px;
-    
+
 }

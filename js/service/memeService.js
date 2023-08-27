@@ -2,29 +2,30 @@
 let gMeme = null
 // let gCanvasWidth
 // let gCanvasHeight
-function createMeme(imgId){
-    
+function createMeme(imgId) {
+
     gMeme = {
         selectedImgId: imgId,
         selectedLineIdx: 0,
 
-        lines: [_createLine()]
+        lines: [_createLine(75, 75)]
     }
 }
 
-function _createLine(){
+function _createLine(x, y) {
     return {
-            txt: 'Insert Desired Text',
-            fontSize: 40,
-            font: 'Impact',
-            color: 'white',
-            position: { x: 75, y: 75 },
-            align: 'left',
-            isMoving: false,
-            isMarked: true
-        }
+        txt: 'Insert Desired Text',
+        fontSize: 30,
+        font: 'Impact',
+        color: 'white',
+        stroke: 'black',
+        rotate: 0,
+        position: { x, y },
+        align: 'left',
+        isMoving: false,
+        isMarked: true
+    }
 }
-
 
 function getMeme() {
     return gMeme
@@ -44,12 +45,25 @@ function getCurrLine() {
 }
 
 function setChangeFont(font) {
-    gMeme.lines.font = font
+    gMeme.lines[gMeme.selectedLineIdx].font = font
 }
 
 function setChangeFontSize(fontSize) {
-    gMeme.lines.fontSize = fontSize
+    gMeme.lines[gMeme.selectedLineIdx].fontSize = fontSize
 }
+
+function setChangeFillColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].color = color
+}
+
+function setChangeStrokeColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].stroke = color
+}
+
+function setRotateDegree(rotateDegree) {
+    gMeme.lines[gMeme.selectedLineIdx].rotate = rotateDegree
+}
+
 
 function isLineClicked(pos) {
     return gMeme.lines.findIndex(line => {
@@ -71,14 +85,17 @@ function isLineMoving(isMoving) {
     gMeme.lines[gMeme.selectedLineIdx].isMoving = isMoving
 }
 
-function switchLine(idx = gMeme.selectedLineIdx) {
-    gMeme.lines[idx].isMarked = true
-    if (idx >= 0) gMeme.selectedLineIdx = idx
-    else {
-        gMeme.selectedLineIdx = (gMeme.selectedLineIdx === gMeme.lines.length - 1)
-            ? 0
-            : gMeme.selectedLineIdx + 1
-    }
+function removeLine() {
+    let selectedLineIdx = gMeme.selectedLineIdx
+    gMeme.lines.splice(selectedLineIdx, 1)
+    gMeme.selectedLineIdx = 0
+}
+
+function switchLine() {
+    let currentLineIdx = gMeme.selectedLineIdx
+    if (currentLineIdx < gMeme.lines.length - 1) gMeme.selectedLineIdx += 1
+    else if (currentLineIdx === gMeme.lines.length - 1) gMeme.selectedLineIdx = 0
+    changeTextInput(getMeme())
 }
 
 function moveLine(dx, dy) {
@@ -90,17 +107,15 @@ function getTextMarkerCords(idx) {
     const line = gMeme.lines[idx]
     let height = line.fontSize
     let width = gCtx.measureText(line.txt).width
-    let yBegin = line.position.y  - height
-    let xEnd = width + height/2
+    let yBegin = line.position.y - height
+    let xEnd = width + height / 2
     let yEnd = height + (height / 4)
     let xBegin = line.position.x - (height / 4)
     return { xBegin, yBegin, xEnd, yEnd }
 }
 
 function addLine() {
-    console.log('Hey im here:');
-    gMeme.lines.push(_createLine())
+    gMeme.lines.push(_createLine(gCanvas.width/4,gCanvas.height/2))
     gMeme.selectedLineIdx = gMeme.lines.length - 1;
-    console.log('gMeme:', gMeme);
 }
 
